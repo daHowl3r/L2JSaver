@@ -56,4 +56,14 @@ public class TreasureHandler implements IVoicedCommandHandler
 	{
 		return VOICED_COMMANDS;
 	}
+	
+	public static final TreasureHandler getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final TreasureHandler _instance = new TreasureHandler();
+	}
 }

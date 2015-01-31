@@ -9,12 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.l2jsaver.abstracts.AbstractExtension;
 import com.l2jsaver.controllers.SaverController;
 import com.l2jsaver.controllers.VoicedHandlerController;
 import com.l2jsaver.features.TreasureHunting.Controller.TreasureController;
 import com.l2jsaver.features.TreasureHunting.Handlers.TreasureHandler;
 import com.l2jsaver.features.TreasureHunting.Model.Treasure;
-import com.l2jsaver.interfaces.IExtension;
 import com.l2jsaver.interfaces.ILogger;
 import com.l2jsaver.interfaces.IMonster;
 import com.l2jsaver.interfaces.IPlayer;
@@ -23,7 +23,7 @@ import com.l2jsaver.interfaces.IPlayer;
  * @author Howler
  *
  */
-public class TreasureHuntingManager implements IExtension
+public class TreasureHuntingManager extends AbstractExtension
 {
 	private ILogger _log = SaverController.getInstance().getLogger();
 	private String MIGRATE_TH = "CREATE TABLE IF NOT EXISTS `TreasureHunting` (" +
@@ -181,10 +181,15 @@ public class TreasureHuntingManager implements IExtension
 
 	public TreasureHuntingManager() 
 	{
+		super(3, "Treasure Hunting");
+		
+		if (isDisabled())
+			return;
+		
 		migrate();
 		restoreTh();
 		TreasureController.getInstance();
-		VoicedHandlerController.getInstance().registerVoicedCommandHandler(new TreasureHandler());
+		VoicedHandlerController.getInstance().registerVoicedCommandHandler(TreasureHandler.getInstance());
 	}
 
 	public static TreasureHuntingManager getInstance() {
@@ -198,29 +203,10 @@ public class TreasureHuntingManager implements IExtension
 	}
 
 	@Override
-	public void reloadExtension() 
+	public void saveExtensionData() 
 	{
 		TreasureController.getInstance().onReload();
-	}
-
-	@Override
-	public void stopExtension() 
-	{
-		TreasureController.getInstance().onReload();
-	}
-
-	@Override
-	public void onLogin(IPlayer player) {
-	}
-
-	@Override
-	public void onLogout(IPlayer player) {
-	}
-
-	@Override
-	public void onPlayerKill(IPlayer playerA, IPlayer playerB) 
-	{
-		
+		VoicedHandlerController.getInstance().unregisterVoicedCommandHandler(TreasureHandler.getInstance());
 	}
 	
 	@Override

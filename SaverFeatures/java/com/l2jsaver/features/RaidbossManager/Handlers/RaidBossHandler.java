@@ -21,9 +21,19 @@ public class RaidBossHandler implements IVoicedCommandHandler
 	}
 
 	@Override
-	public String[] getVoicedCommandList() {
-		// TODO Auto-generated method stub
+	public String[] getVoicedCommandList() 
+	{
 		return VOICED_COMMANDS;
+	}
+	
+	public static final RaidBossHandler getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final RaidBossHandler _instance = new RaidBossHandler();
 	}
 
 }

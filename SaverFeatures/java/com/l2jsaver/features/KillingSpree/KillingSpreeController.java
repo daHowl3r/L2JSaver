@@ -5,11 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.l2jsaver.abstracts.AbstractExtension;
 import com.l2jsaver.controllers.PlayerController;
 import com.l2jsaver.controllers.SaverController;
 import com.l2jsaver.controllers.VoicedHandlerController;
 import com.l2jsaver.features.KillingSpree.Handler.KillingSpree;
-import com.l2jsaver.interfaces.IExtension;
 import com.l2jsaver.interfaces.ILogger;
 import com.l2jsaver.interfaces.IMonster;
 import com.l2jsaver.interfaces.IPlayer;
@@ -17,7 +17,7 @@ import com.l2jsaver.interfaces.IPlayer;
 /**
  * @author Howler
  */
-public class KillingSpreeController implements IExtension
+public class KillingSpreeController extends AbstractExtension
 {
 	private static String CREATE  = "CREATE TABLE IF NOT EXISTS `killingSpree` (" +
 									"`charId`  int(10) NOT NULL ," +
@@ -38,6 +38,11 @@ public class KillingSpreeController implements IExtension
 	
 	public KillingSpreeController() 
 	{
+		super(0, "Killing Spree");
+		
+		if (isDisabled())
+			return;
+		
 		createDb();
 		VoicedHandlerController.getInstance().registerVoicedCommandHandler(new KillingSpree());
 		
@@ -175,13 +180,7 @@ public class KillingSpreeController implements IExtension
 	}
 
 	@Override
-	public void reloadExtension() 
-	{
-		
-	}
-
-	@Override
-	public void stopExtension() 
+	public void saveExtensionData() 
 	{
 		for (IPlayer p : PlayerController.getInstance().getPlayers().values())
 		{

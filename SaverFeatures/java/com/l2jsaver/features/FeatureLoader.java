@@ -14,10 +14,10 @@ public class FeatureLoader
 	{
 		ext = ExtensionController.getInstance();
 		
-		ext.addExtension(0, Test.getInstance());
-		ext.addExtension(1, TreasureHuntingManager.getInstance());
-		ext.addExtension(2, KillingSpreeController.getInstance());
-		ext.addExtension(3, RaidBossManager.getInstance());
+		ext.addExtension(Test.getInstance());
+		ext.addExtension(TreasureHuntingManager.getInstance());
+		ext.addExtension(KillingSpreeController.getInstance());
+		ext.addExtension(RaidBossManager.getInstance());
 	}
 	
 	public static final FeatureLoader getInstance()
